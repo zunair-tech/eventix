@@ -1,0 +1,1 @@
+class Paymentmethod1ItemModel { }
