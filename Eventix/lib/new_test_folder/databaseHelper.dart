@@ -18,10 +18,10 @@ class DatabaseHelper {
 
   Future<String> getDatabasePath() async {
     // Get the directory for storing the database file
-    Directory directory = await getApplicationDocumentsDirectory();
+    Directory? directory = await getExternalStorageDirectory();
 
     // Create the directory if it doesn't exist
-    if (!directory.existsSync()) {
+    if (!directory!.existsSync()) {
       directory.createSync(recursive: true);
     }
 
@@ -218,14 +218,14 @@ class DatabaseHelper {
     if (db != null) {
       final List<Map<String, dynamic>> maps = await db.query('Images');
       print('Images fetched successfully');
-      Fluttertoast.showToast(
-          msg: "Images fetched successfully",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 10,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      // Fluttertoast.showToast(
+      //     msg: "Images fetched successfully",
+      //     toastLength: Toast.LENGTH_LONG,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 10,
+      //     backgroundColor: Colors.green,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0);
       return List.generate(maps.length, (i) {
         return ListcountryOneItemModel(
           img: maps[i]['img'] ?? '',
