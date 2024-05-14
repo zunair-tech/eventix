@@ -1,9 +1,4 @@
-import 'dart:io';
-
-import 'package:Eventix/new_test_folder/models/user_model.dart';
 import 'package:Eventix/widgets/bg_img.dart';
-import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../home_page/widgets/listcountry_one_item_widget.dart';
 import '../home_page/widgets/listunsplashk4cvkfs5cta_item_widget.dart';
@@ -12,7 +7,6 @@ import 'models/home_model.dart';
 import 'models/listcountry_one_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:Eventix/core/app_export.dart';
-import 'package:Eventix/new_test_folder/databaseHelper.dart';
 
 // ignore_for_file: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -190,7 +184,6 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           ),
-
                           Padding(
                             padding: getPadding(top: 20, right: 24, left: 24),
                             child: Text(
@@ -200,51 +193,6 @@ class HomePage extends StatelessWidget {
                               style: AppStyle.txtOutfitLight18Gray600,
                             ),
                           ),
-                          //
-                          //
-                          // save images button
-                          // Home page code
-// Home page code
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Hide the button if two images are uploaded
-                              Obx(() {
-                                final isButtonVisible =
-                                    controller.isButtonVisible.value;
-                                return isButtonVisible
-                                    ? ElevatedButton(
-                                        onPressed: () =>
-                                            _insertData(), // Call the function to insert images
-                                        child: Text('Insert Images'),
-                                      )
-                                    : SizedBox.shrink();
-                              }),
-                            ],
-                          ), //
-                          //
-                          //
-                          // Padding(
-                          //   padding: getPadding(left: 24, right: 24),
-                          //   child: Obx(
-                          //     () => ListView.builder(
-                          //       physics: BouncingScrollPhysics(),
-                          //       shrinkWrap: true,
-                          //       itemCount: controller.homeModelObj.value
-                          //           .listunsplashk4cvkfs5ctaItemList.length,
-                          //       itemBuilder: (context, index) {
-                          //         ListcountryOneItemModel model = controller
-                          //             .homeModelObj
-                          //             .value
-                          //             .listunsplashk4cvkfs5ctaItemList[index];
-                          //         return Listunsplashk4cvkfs5ctaItemWidget(
-                          //           model,
-                          //         );
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
                           Padding(
                             padding: getPadding(left: 24, right: 24),
                             child: Obx(
@@ -276,30 +224,5 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  // Method to handle image picking
-  Future<File?> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      return File(pickedFile.path);
-    } else {
-      print('No image selected.');
-      return null;
-    }
-  }
-
-  final dbHelper = DatabaseHelper();
-  List<User> imagesList = [];
-  void _insertData() async {
-    File? imageFile = await _pickImage();
-    if (imageFile != null) {
-      // Insert data into SQLite with image path
-      int userId = await dbHelper.insertImages(Images(
-        imagesPath: imageFile.path, // Store image path in the database
-      ));
-      print('Inserted user with ID: $userId');
-    }
   }
 }

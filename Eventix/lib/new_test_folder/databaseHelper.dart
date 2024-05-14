@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:Eventix/core/app_export.dart';
 import 'package:Eventix/new_test_folder/models/book_model.dart';
 import 'package:Eventix/new_test_folder/models/customer_model.dart';
 import 'package:Eventix/new_test_folder/models/event_model.dart';
 import 'package:Eventix/new_test_folder/models/user_model.dart';
 import 'package:Eventix/new_test_folder/models/volunteer_model.dart';
+import 'package:Eventix/presentation/home_page/models/listcountry_one_item_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -70,10 +72,13 @@ class DatabaseHelper {
       onCreate: (db, version) async {
         // create images table
         await db.execute('''
-  CREATE TABLE IF NOT EXISTS Images (
-    ImagePath TEXT PRIMARY KEY
-  )
-''');
+      CREATE TABLE Images (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        img TEXT,
+        isFav INTEGER,
+        name TEXT
+      )
+    ''');
 
         // Create User table
         await db.execute('''
@@ -181,11 +186,56 @@ class DatabaseHelper {
   }
 
 // insert images
+  Future<bool> insertImage(ListcountryOneItemModel image) async {
+    try {
+      Database? db = await database;
+      if (db != null) {
+        await db.insert('Images', image.toMap());
+        print('Image inserted successfully');
+        return true; // Return true if insertion was successful
+      } else {
+        throw Exception("Database is null");
+      }
+    } catch (e) {
+      print("Error inserting image: $e");
+      return false; // Return false if an error occurred
+    }
+  }
 
-  // DatabaseHelper.dart
-  Future<int> insertImages(Images images) async {
-    final db = await database;
-    return await db!.insert('Images', images.toMap());
+  Future<List<ListcountryOneItemModel>> fetchImages() async {
+    print('Fetching images...');
+    Database? db = await database;
+    if (db != null) {
+      final List<Map<String, dynamic>> maps = await db.query('Images');
+      print('Images fetched successfully');
+
+      return List.generate(maps.length, (i) {
+        return ListcountryOneItemModel(
+          img: maps[i]['img'] ?? '',
+          isFav: maps[i]['isFav'] == 1,
+          name: maps[i]['name'] ?? '',
+        );
+      });
+    } else {
+      throw Exception("Database is null");
+    }
+  }
+
+  Future<bool> deleteImage(String imgPath) async {
+    try {
+      Database? db = await database;
+      if (db != null) {
+        int rowsAffected =
+            await db.delete('Images', where: 'img = ?', whereArgs: [imgPath]);
+        print('Deleted $rowsAffected row(s)');
+        return rowsAffected > 0; // Return true if deletion was successful
+      } else {
+        throw Exception("Database is null");
+      }
+    } catch (e) {
+      print("Error deleting image: $e");
+      return false; // Return false if an error occurred
+    }
   }
 
 // insert user
