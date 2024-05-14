@@ -7,6 +7,8 @@ import 'package:Eventix/new_test_folder/models/event_model.dart';
 import 'package:Eventix/new_test_folder/models/user_model.dart';
 import 'package:Eventix/new_test_folder/models/volunteer_model.dart';
 import 'package:Eventix/presentation/home_page/models/listcountry_one_item_model.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -191,6 +193,14 @@ class DatabaseHelper {
       Database? db = await database;
       if (db != null) {
         await db.insert('Images', image.toMap());
+        Fluttertoast.showToast(
+            msg: "Image Inserted",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            // timeInSecForIosWeb: 10,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
         print('Image inserted successfully');
         return true; // Return true if insertion was successful
       } else {
@@ -208,7 +218,14 @@ class DatabaseHelper {
     if (db != null) {
       final List<Map<String, dynamic>> maps = await db.query('Images');
       print('Images fetched successfully');
-
+      Fluttertoast.showToast(
+          msg: "Images fetched successfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 10,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
       return List.generate(maps.length, (i) {
         return ListcountryOneItemModel(
           img: maps[i]['img'] ?? '',
@@ -228,6 +245,14 @@ class DatabaseHelper {
         int rowsAffected =
             await db.delete('Images', where: 'img = ?', whereArgs: [imgPath]);
         print('Deleted $rowsAffected row(s)');
+        Fluttertoast.showToast(
+            msg: "Data is Deleted",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            // timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
         return rowsAffected > 0; // Return true if deletion was successful
       } else {
         throw Exception("Database is null");
