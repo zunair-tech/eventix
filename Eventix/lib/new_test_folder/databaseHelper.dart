@@ -65,8 +65,8 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
     // Get the directory for the app's documents
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'Eventix.db');
+    Directory? documentsDirectory = await getExternalStorageDirectory();
+    String path = join(documentsDirectory!.path, 'Eventix.db');
 
     // Open the database at the documents directory path
     return openDatabase(

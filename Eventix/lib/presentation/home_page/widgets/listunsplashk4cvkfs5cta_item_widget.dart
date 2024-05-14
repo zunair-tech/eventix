@@ -233,9 +233,21 @@ class _Listunsplashk4cvkfs5ctaItemWidgetState
         isFav: false, // Pass boolean value directly
       );
 
-      DatabaseHelper databaseHelper = DatabaseHelper();
-      await databaseHelper.insertImage(image);
-      controller.refresh();
+      // Check if the image already exists in the list
+      bool imageExists = images.any((img) => img.img == image.img);
+
+      // If the image does not exist in the list, add it
+      if (!imageExists) {
+        setState(() {
+          images.add(image);
+        });
+
+        // Insert the image into the database
+        await databaseHelper.insertImage(image);
+
+        // Refresh the UI
+        controller.refresh();
+      }
     }
   }
 
@@ -308,6 +320,7 @@ class _Listunsplashk4cvkfs5ctaItemWidgetState
               ),
             ),
           ),
+        // Display only one FloatingActionButton for image upload
         // FloatingActionButton(
         //   onPressed: _pickImage,
         //   tooltip: 'Pick Image',

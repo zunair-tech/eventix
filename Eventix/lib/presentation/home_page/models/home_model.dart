@@ -22,10 +22,10 @@ class HomeModel {
       name: 'CR7 Exhibition',
       isFav: false,
     ),
-    ListcountryOneItemModel(
-      img: ImageConstant.Majeed,
-      name: 'Abdulmajeed Abdullah concert',
-      isFav: false,
-    ),
+    // ListcountryOneItemModel(
+    //   img: ImageConstant.Majeed,
+    //   name: 'Abdulmajeed Abdullah concert',
+    //   isFav: false,
+    // ),
   ]);
 }
